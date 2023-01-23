@@ -29,7 +29,7 @@ with tab_main:
 
   # Or use a sample dataset
   if st.checkbox("Use sample dataset"):
-      file_url = 'https://raw.githubusercontent.com/hoyinli1211/SyntheticData/main/sample-synthetic.csv'
+      file_url = "https://raw.githubusercontent.com/hoyinli1211/SyntheticData/main/sample-synthetic.csv"
       file = pd.read_csv(file_url)
 
   if file:
