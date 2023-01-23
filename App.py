@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+from imblearn.over_sampling import SMOTE
 
 #Sidebar
 st.sidebar.title("Instructions:")
