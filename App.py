@@ -25,15 +25,17 @@ with tab_note:
 tab_main = tabs[1]
 with tab_main:
   # Allow the user to upload a file
-  file = st.file_uploader("Upload your dataset in csv format", type=["csv"])
+  uploaded_file = st.file_uploader("Upload your dataset in csv format", type=["csv"])
 
   # Or use a sample dataset
   samplecheck = st.checkbox("Use sample dataset")
   if samplecheck:
       file_url = "https://raw.githubusercontent.com/hoyinli1211/SyntheticData/main/sample-synthetic.csv"
       file = pd.read_csv(file_url)
+      data = pd.read_csv(file)
+      st.write("Dataset", data)
 
-  if file or samplecheck:
+  if uploaded_file is not None:
       data = pd.read_csv(file)
       st.write("Dataset", data)
       
