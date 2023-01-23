@@ -20,9 +20,7 @@ def note():
   st.markdown("He, H. and Garcia, E. A. (2008). Learning from imbalanced data. IEEE Transactions on Knowledge and Data Engineering, 20(1), pp.1263-1284.")
   st.markdown("Chawla, N. V., Bowyer, K. W., Hall, L. O. and Kegelmeyer, W. P. (2002). SMOTE: Synthetic Minority Over-sampling Technique. Journal of Artificial Intelligence Research, 16, pp.321-357.")
   st.markdown("Han, H., Wang, W. and Mao, B. (2005). Borderline-SMOTE: A new over-sampling method in imbalanced data sets learning. In International Conference on Intelligent Computing, pp.878-887.")
-
-Regenerate response")
-  st.markdown("This is Note 2")
+  
 
 def create_OverRandSampling(df, label_col, num_records):
     # Define the oversampling method
