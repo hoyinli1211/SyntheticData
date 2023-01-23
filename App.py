@@ -88,6 +88,6 @@ with tab_result:
     st.write("Synthetic Data using Random Over-sampling:", data_ROS)
     st.download_button("Download Synthetic data",data_ROS.to_csv(index=False), "Synthetic_Data_RandomOverSampling.csv")
   if st.checkbox("SMOTE"):
-    data_SMOTE = create_SMOT(data, label_col, num_records)
+    data_SMOTE = create_SMOTE(data, label_col, num_records)
     st.write("Synthetic Data using SMOTE:", data_SMOTE)
     st.download_button("Download Synthetic data", data_SMOTE.to_csv(index=False), "Synthetic_Data_SMOTE.csv")
