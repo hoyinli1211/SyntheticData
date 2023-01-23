@@ -38,7 +38,7 @@ def plot_label(df, label_col):
   ax.set_title("Class Distribution in Label Column")
   st.pyplot(fig)
   
-def create_OverRandSampling(df, label_col, num_records):
+def create_RandOverSampling(df, label_col, num_records):
     # Define the oversampling method
     ros = RandomOverSampler(sampling_strategy='auto')
     # Split the data into features and labels
@@ -111,13 +111,8 @@ with tab_main:
 tab_result = tabs[2]
 with tab_result:
   if st.checkbox("Over Random Sampling"):
-    data_ROS = create_OverRandSampling(data, label_col, num_records)
-    st.write("Synthetic Data using Random Over-sampling:", data_ROS)
-    plot_label(data_ROS, label_col)
-    st.download_button("Download Synthetic data",data_ROS.to_csv(index=False), "Synthetic_Data_RandomOverSampling.csv")
+    data_ROS = create_RandOverSampling(data, label_col, num_records)
+    show_result(data_ROS, label_col, "Synthetic Data using Random Over-Sampling:")
   if st.checkbox("SMOTENC"):
     data_SMOTENC = create_SMOTENC(data, label_col, num_records)
-    #st.write("Synthetic Data using SMOTE:", data_SMOTENC)
-    #plot_label(data_SMOTENC, label_col)
-    #st.download_button("Download Synthetic data", data_SMOTENC.to_csv(index=False), "Synthetic_Data_SMOTENC.csv")
     show_result(data_SMOTENC, label_col, "Synthetic Data using SMOTE:")
