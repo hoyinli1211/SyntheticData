@@ -6,9 +6,9 @@ from imblearn.over_sampling import RandomOverSampler
 
 #Sidebar
 st.sidebar.title("Instructions:")
-st.sidebar.markdown("1. ")
-st.sidebar.markdown("2. ")
-st.sidebar.markdown("3. ")
+st.sidebar.markdown("1. Upload the data")
+st.sidebar.markdown("2. Choose the number of records required in the synthetic dataset")
+st.sidebar.markdown("3. Select the label data field")
 st.sidebar.markdown("4. ")
 
 def note():
@@ -16,7 +16,7 @@ def note():
   st.markdown("This is Note 1")
   st.markdown("This is Note 2")
 
-def create_synthetic_data(df, label_col, num_records):
+def create_OverRandSampling(df, label_col, num_records):
     # Define the oversampling method
     ros = RandomOverSampler(sampling_strategy='auto')
     # Split the data into features and labels
@@ -32,7 +32,7 @@ def create_synthetic_data(df, label_col, num_records):
   
 #Main Page
 st.title("Synthetic Data Generator")
-tabs = st.tabs(["Note","Configuration & Synthetic Data Generation"])
+tabs = st.tabs(["Note","Upload & Configuration", "Create Synthetic Data"])
 
 tab_note = tabs[0]
 with tab_note:
@@ -56,7 +56,9 @@ with tab_main:
       
   num_records = st.number_input("How many additional records would you like to generate?", min_value=1, value=1000)
   label_col = st.selectbox("Select label column", data.columns)
-  
-  if st.checkbox("Run the Synthetic Data"):
-    data_resampled = create_synthetic_data(data, label_col, num_records)
-    st.write("Synthetic Data:", data_resampled)
+
+tab_result = tabs[2]
+with tab_result:
+  if st.checkbox("Over Random Sampling"):
+    data_resampled = create_OverRandSampling(data, label_col, num_records)
+    st.write("Synthetic Data using Random Over-sampling:", data_resampled)
