@@ -28,11 +28,12 @@ with tab_main:
   file = st.file_uploader("Upload your dataset in csv format", type=["csv"])
 
   # Or use a sample dataset
-  if st.checkbox("Use sample dataset"):
+  samplecheck = st.checkbox("Use sample dataset")
+  if samplecheck:
       file_url = "https://raw.githubusercontent.com/hoyinli1211/SyntheticData/main/sample-synthetic.csv"
       file = pd.read_csv(file_url)
 
-  if file:
+  if file or samplecheck:
       data = pd.read_csv(file)
       st.write("Dataset", data)
       
