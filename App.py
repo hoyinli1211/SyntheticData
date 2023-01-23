@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
   #ros
 from imblearn.over_sampling import RandomOverSampler
+  #smote
+from imblearn.over_sampling import SMOTE, ADASYN, BorderlineSMOTE, SVMSMOTE
 
 
 #Sidebar
@@ -37,7 +39,20 @@ def create_OverRandSampling(df, label_col, num_records):
     # Select a random sample from the synthetic dataframe
     synthetic_df = synthetic_df.sample(num_records, replace=True)
     return synthetic_df
- 
+
+def create_SMOTE(df, label_col, num_records):
+    X = df.drop(label_col, axis=1)
+    y = df[label_col]
+    smote_variant = SMOTE(sampling_strategy='minority')
+    X_smote, y_smote = smote_variant.fit_resample(X, y)
+    # If the number of records generated is more than the original dataset,
+    # we can use the resampled data to randomly select "num_records" number of records
+    X_smote = X_smote.sample(num_records, random_state=42)
+    y_smote = y_smote.sample(num_records, random_state=42)
+    # Create a new dataframe with the resampled data and the label column
+    synthetic_data = pd.concat([X_smote, y_smote], axis=1)
+    return synthetic_data
+  
 #Main Page
 st.title("Synthetic Data Generator")
 tabs = st.tabs(["Note","Upload & Configuration", "Create Synthetic Data"])
@@ -72,3 +87,7 @@ with tab_result:
     data_ROS = create_OverRandSampling(data, label_col, num_records)
     st.write("Synthetic Data using Random Over-sampling:", data_ROS)
     st.download_button("Download Synthetic data",data_ROS.to_csv(index=False), "Synthetic_Data_RandomOverSampling.csv")
+  if st.checkbox("SMOTE"):
+    data_SMOTE = create_SMOT(data, label_col, num_records)
+    st.write("Synthetic Data using SMOTE:", data_SMOTE)
+    st.download_button("Download Synthetic data", data_SMOTE.to_csv(index=False), "Synthetic_Data_SMOTE.csv")
