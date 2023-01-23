@@ -20,7 +20,7 @@ def note():
   st.title("Note")
   st.subheader("What is Imbalanced Data?")
   st.markdown("Imbalanced data is a common problem in machine learning where the classes in a dataset are not represented equally. In fraud detection, for example, the number of instances of fraud (minority class) may be significantly less than the number of instances of non-fraud (majority class), leading to a biased model that is less effective at detecting fraud. There are several techniques for addressing imbalanced data, including oversampling the minority class, undersampling the majority class, and using techniques such as SMOTE (Synthetic Minority Over-sampling Technique) and ADASYN (Adaptive Synthetic Sampling). The most appropriate method will depend on the specific dataset and the problem being solved. Some reference papers on imbalanced data are:")
-  st.markdown("A dataset is considered imbalanced when one class (or group) of data points has significantly more observations than the other class. This is often the case in real-world datasets, particularly in areas such as fraud detection, anomaly detection, and medical diagnosis, where the minority class is the one of interest. For example, in a fraud detection dataset, the number of fraud cases may be only a small fraction of the total number of cases (mild if proportion of minority class is 20-40%% of the dataset, moderate if 1-20% and extreme if < 1%), making the dataset imbalanced.")
+  st.markdown("A dataset is considered imbalanced when one class (or group) of data points has significantly more observations than the other class. This is often the case in real-world datasets, particularly in areas such as fraud detection, anomaly detection, and medical diagnosis, where the minority class is the one of interest. For example, in a fraud detection dataset, the number of fraud cases may be only a small fraction of the total number of cases (mild if proportion of minority class is 20-40% of the dataset, moderate if 1-20% and extreme if < 1%), making the dataset imbalanced.")
   st.markdown("1. **He, H. and Garcia, E. A. (2008)** Learning from imbalanced data. IEEE Transactions on Knowledge and Data Engineering, 20(1), pp.1263-1284.")
   st.markdown("2. **Chawla, N. V., Bowyer, K. W., Hall, L. O. and Kegelmeyer, W. P. (2002)** SMOTE: Synthetic Minority Over-sampling Technique. Journal of Artificial Intelligence Research, 16, pp.321-357.")
   st.markdown("3. **Han, H., Wang, W. and Mao, B. (2005).** Borderline-SMOTE: A new over-sampling method in imbalanced data sets learning. In International Conference on Intelligent Computing, pp.878-887.")
@@ -32,6 +32,7 @@ def note():
   st.subheader("What is SMOTE-NC (SMOTE for Nominal and Continuous features)?")
   st.markdown("SMOTE-NC is a synthetic data generation method for handling imbalanced datasets that contains both nominal and continuous features. The method is a variant of the popular SMOTE algorithm, which only works with datasets that contain only continuous features. SMOTE NC uses a combination of the K-Nearest Neighbors (KNN) algorithm and the SMOTE algorithm to generate synthetic samples for the minority class. The method first applies the KNN algorithm to identify the nearest neighbors for each minority class sample, and then uses the SMOTE algorithm to generate synthetic samples. The generated synthetic samples are then added to the original dataset, resulting in a balanced dataset. This method has been shown to improve the performance of classifiers trained on imbalanced datasets with both nominal and continuous features, and is a useful tool for a wide range of applications, including credit card fraud detection, medical diagnosis, and customer churn prediction.")
   st.markdown("5. **Kuncheva, L.I. and Rodriguez, J.J. (2018)** SMOTE-NC: Synthetic Minority Over-sampling Technique for Nominal and Continuous features', IEEE Transactions on Cybernetics, vol. 48, no. 6, pp. 1797-1807.")
+  
   
 def plot_label(df, label_col):
   # count the number of records for each class in the label column
@@ -78,6 +79,19 @@ def create_SMOTENC(df, label_col, num_records):
     synthetic_df = X_resampled.sample(num_records, replace=True).reset_index(drop=True)
     return synthetic_df
 
+def create_ADASYN(df, label_col, num_records):
+    # Define the oversampling method
+    adasyn = ADASYN(sampling_strategy='auto')
+    # Split the data into features and labels
+    X, y = df.drop(label_col, axis=1), df[label_col]
+    # Apply oversampling
+    X_res, y_res = adasyn.fit_resample(X, y)
+    # Create a new dataframe with the synthetic data
+    synthetic_df = pd.concat([pd.DataFrame(X_res), pd.DataFrame(y_res, columns=[label_col])], axis=1)
+    # Select a random sample from the synthetic dataframe
+    synthetic_df = synthetic_df.sample(num_records, replace=True).reset_index(drop=True)
+    return synthetic_df  
+  
 def show_result(df, label_col, remark):
   st.write(remark, df)
   plot_label(df, label_col)
@@ -120,3 +134,6 @@ with tab_result:
   if st.checkbox("SMOTENC"):
     data_SMOTENC = create_SMOTENC(data, label_col, num_records)
     show_result(data_SMOTENC, label_col, "Synthetic Data using SMOTE:")
+  if st.checkbox("ADASYN"):
+    data_ADASYN = create_ADASYN(data, label_col, num_records)
+    show_result(data_ADASYN, label_col, "Synthetic Data using ADASYN:")
