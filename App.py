@@ -34,3 +34,7 @@ With tab_main:
   if file:
       data = pd.read_csv(file)
       st.write("Dataset", data)
+      
+  num_records = st.number_input("How many additional records would you like to generate?", min_value=1, value=1000)
+  
+  
