@@ -107,8 +107,10 @@ with tab_result:
   if st.checkbox("Over Random Sampling"):
     data_ROS = create_OverRandSampling(data, label_col, num_records)
     st.write("Synthetic Data using Random Over-sampling:", data_ROS)
+    plot_label(data_ROS, label_col)
     st.download_button("Download Synthetic data",data_ROS.to_csv(index=False), "Synthetic_Data_RandomOverSampling.csv")
   if st.checkbox("SMOTENC"):
     data_SMOTENC = create_SMOTENC(data, label_col, num_records)
     st.write("Synthetic Data using SMOTE:", data_SMOTENC)
+    plot_label(data_SMOTENC, label_col)
     st.download_button("Download Synthetic data", data_SMOTENC.to_csv(index=False), "Synthetic_Data_SMOTENC.csv")
