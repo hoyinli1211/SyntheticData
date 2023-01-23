@@ -2,12 +2,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from imblearn.over_sampling import SMOTE
-from sklearn.model_selection import train_test_split
-from sklearn.utils import resample
-from sklearn.preprocessing import MinMaxScaler
 from imblearn.over_sampling import RandomOverSampler
-from imblearn.over_sampling import ADASYN
 
 #Sidebar
 st.sidebar.title("Instructions:")
@@ -20,6 +15,20 @@ def note():
   st.title("Note")
   st.markdown("This is Note 1")
   st.markdown("This is Note 2")
+
+def create_synthetic_data(df, label_col, num_records):
+    # Define the oversampling method
+    ros = RandomOverSampler(sampling_strategy='auto')
+    # Split the data into features and labels
+    X, y = df.drop(label_col, axis=1), df[label_col]
+    # Apply oversampling
+    X_res, y_res = ros.fit_resample(X, y)
+    # Create a new dataframe with the synthetic data
+    synthetic_df = pd.concat([pd.DataFrame(X_res), pd.DataFrame(y_res, columns=[label_col])], axis=1)
+    # Select a random sample from the synthetic dataframe
+    synthetic_df = synthetic_df.sample(num_records)
+    return synthetic_df
+  
   
 #Main Page
 st.title("Synthetic Data Generator")
@@ -49,32 +58,5 @@ with tab_main:
   label_col = st.selectbox("Select label column", data.columns)
   
   if st.checkbox("Run the Synthetic Data"):
-    # Split the data into features and label
-    X = data.drop(label_col, axis=1) #assuming the name of the label column is "Fraud"
-    y = data[label_col]
-
-    # Separating Numerical and Categorical variables
-    num_cols = X.select_dtypes(include=np.number).columns
-    cat_cols = X.select_dtypes(exclude=np.number).columns
-
-    # Scale numerical variables
-    scaler = MinMaxScaler()
-    X[num_cols] = scaler.fit_transform(X[num_cols])
-
-    # Oversampling on numerical data using Random oversampling with replacement
-    X_num_resampled, y_num_resampled = resample(X[num_cols], y, 
-                                                random_state=42, 
-                                                sampling_strategy='auto', 
-                                                replace=True)
-
-    # Oversampling on categorical data using ADASYN
-    X_cat_resampled, y_cat_resampled = ADASYN().fit_resample(X[cat_cols], y)
-
-    # Join resampled numerical and categorical data
-    X_resampled = pd.concat([X_num_resampled, X_cat_resampled], axis=1)
-    y_resampled = y_num_resampled
-
-    # Join the synthetic dataframe to the original dataframe
-    data_resampled = pd.concat([X_resampled, y_resampled], axis=1)
-
+    data_resampled = create_synthetic_data(data, label_col, num_records)
     st.write("Synthetic Data:", data_resampled)
