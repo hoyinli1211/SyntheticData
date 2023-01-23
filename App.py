@@ -24,7 +24,7 @@ def create_OverRandSampling(df, label_col, num_records):
     # Split the data into features and labels
     X, y = df.drop(label_col, axis=1), df[label_col]
     # Apply oversampling
-    X_res, y_res = ros.fit_resample(X, y)
+    X_res, y_res = ros.fit_resample(X, y, replace=True)
     # Create a new dataframe with the synthetic data
     synthetic_df = pd.concat([pd.DataFrame(X_res), pd.DataFrame(y_res, columns=[label_col])], axis=1)
     # Select a random sample from the synthetic dataframe
