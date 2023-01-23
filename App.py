@@ -23,7 +23,7 @@ def note():
   
   st.subheader("What is Random over-sampling?")
   st.markdown("Random over-sampling is a technique used to balance imbalanced datasets by replicating the minority class in order to increase the number of samples in the minority class. This is done by randomly selecting samples from the minority class and replicating them to create new, artificially generated samples. One of the benefits of this method is that it is simple and easy to implement. However, it can also lead to overfitting, especially when the minority class is very small. In a study of credit card fraud detection, the paper by P. G. S. de Silva found that random over-sampling improved the performance of the fraud detection model, but also increased the number of false positives. The authors concluded that further research is needed to optimize the balance between the number of false positives and the detection rate.")
-  st.markdown("4. **de Silva, P. G. S., Wijesoma, W. S., & Wijethunga, S. (2019)** Credit Card Fraud Detection using Random Over-sampling. Journal of Advanced Research in Dynamical and Control Systems, 11(Special Issue 13), 2319-2324)
+  st.markdown("4. **de Silva, P. G. S., Wijesoma, W. S., & Wijethunga, S. (2019)** Credit Card Fraud Detection using Random Over-sampling. Journal of Advanced Research in Dynamical and Control Systems, 11(Special Issue 13), 2319-2324.")
 
 def create_OverRandSampling(df, label_col, num_records):
     # Define the oversampling method
