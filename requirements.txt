@@ -3,5 +3,3 @@ pandas==1.2.3
 numpy==1.23.1
 scikit-learn==0.24.1
 imbalanced-learn==0.7.0
-tensorflow==2.4.1
-keras-vae==1.0.8
