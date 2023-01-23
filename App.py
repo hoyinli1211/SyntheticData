@@ -33,8 +33,8 @@ def plot_label(df, label_col):
   label_counts = df[label_col].value_counts()
   # create the pie chart
   fig, ax = plt.subplots()
-  ax.pie(label_counts.values, labels=label_counts.index)
-  #ax.title("Class Distribution in Label Column")
+  ax.pie(label_counts.values, labels=label_counts.index, autopct='%1.1f%%')
+  ax.set_title("Class Distribution in Label Column")
   st.pyplot(fig)
   
 def create_OverRandSampling(df, label_col, num_records):
