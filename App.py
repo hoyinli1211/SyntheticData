@@ -5,8 +5,8 @@ import numpy as np
   #ros
 from imblearn.over_sampling import RandomOverSampler
   #smote
-from imblearn.over_sampling import SMOTE, ADASYN, BorderlineSMOTE, SVMSMOTE
-
+from imblearn.over_sampling import SMOTE, SMOTENC, ADASYN, BorderlineSMOTE, SVMSMOTE
+from sklearn.preprocessing import OrdinalEncoder
 
 #Sidebar
 st.sidebar.title("Instructions:")
@@ -40,18 +40,28 @@ def create_OverRandSampling(df, label_col, num_records):
     synthetic_df = synthetic_df.sample(num_records, replace=True)
     return synthetic_df
 
-def create_SMOTE(df, label_col, num_records):
+def create_SMOTENC(df, label_col, num_records):
+    # Get the categorical column indices
+    cat_cols = df.select_dtypes(include=['object']).columns
+    cat_cols_idx = [df.columns.get_loc(col) for col in cat_cols]
+    # Initialize the encoder
+    enc = OrdinalEncoder()
+    # Encode the categorical columns
+    df[cat_cols] = enc.fit_transform(df[cat_cols])
+    # Split the data into features and target
     X = df.drop(label_col, axis=1)
     y = df[label_col]
-    smote_variant = SMOTE(sampling_strategy='minority')
-    X_smote, y_smote = smote_variant.fit_resample(X, y)
-    # If the number of records generated is more than the original dataset,
-    # we can use the resampled data to randomly select "num_records" number of records
-    X_smote = X_smote.sample(num_records, random_state=42)
-    y_smote = y_smote.sample(num_records, random_state=42)
-    # Create a new dataframe with the resampled data and the label column
-    synthetic_data = pd.concat([X_smote, y_smote], axis=1)
-    return synthetic_data
+    # Initialize the SMOTENC oversampler
+    sm = SMOTENC(categorical_features=cat_cols_idx)
+    # Fit the oversampler to the data
+    X_resampled, y_resampled = sm.fit_resample(X, y)
+    # Decode the categorical columns
+    X_resampled[cat_cols] = enc.inverse_transform(X_resampled[cat_cols])
+    # Add the label column back to the resampled data
+    X_resampled[label_col] = y_resampled
+    # Return the resampled data
+    synthetic_df = X_resampled
+    return synthetic_df
   
 #Main Page
 st.title("Synthetic Data Generator")
@@ -87,7 +97,7 @@ with tab_result:
     data_ROS = create_OverRandSampling(data, label_col, num_records)
     st.write("Synthetic Data using Random Over-sampling:", data_ROS)
     st.download_button("Download Synthetic data",data_ROS.to_csv(index=False), "Synthetic_Data_RandomOverSampling.csv")
-  if st.checkbox("SMOTE"):
-    data_SMOTE = create_SMOTE(data, label_col, num_records)
-    st.write("Synthetic Data using SMOTE:", data_SMOTE)
-    st.download_button("Download Synthetic data", data_SMOTE.to_csv(index=False), "Synthetic_Data_SMOTE.csv")
+  if st.checkbox("SMOTENC"):
+    data_SMOTENC = create_SMOTENC(data, label_col, num_records)
+    st.write("Synthetic Data using SMOTE:", data_SMOTENC)
+    st.download_button("Download Synthetic data", data_SMOTENC.to_csv(index=False), "Synthetic_Data_SMOTENC.csv")
