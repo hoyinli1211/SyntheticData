@@ -55,8 +55,9 @@ with tab_main:
       data = pd.read_csv(file)
       st.write("Dataset", data)
       
-  num_records = st.number_input("How many additional records would you like to generate?", min_value=1, value=1000)
-  label_col = st.selectbox("Select label column", data.columns)
+  if samplecheck or uploaded_file is not None:
+    num_records = st.number_input("How many additional records would you like to generate?", min_value=1, value=1000)
+    label_col = st.selectbox("Select label column", data.columns)
 
 tab_result = tabs[2]
 with tab_result:
