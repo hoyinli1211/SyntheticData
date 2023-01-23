@@ -1,12 +1,13 @@
 # Import the necessary libraries
 import streamlit as st
 import pandas as pd
-from imblearn.over_sampling import SMOTE
+import numpy as np
+from imbalanced_learn.over_sampling import SMOTE
 from sklearn.model_selection import train_test_split
 from sklearn.utils import resample
 from sklearn.preprocessing import MinMaxScaler
-from imblearn.over_sampling import RandomOverSampler
-from imblearn.over_sampling import ADASYN
+from imbalanced_learn.over_sampling import RandomOverSampler
+from imbalanced_learn.over_sampling import ADASYN
 
 #Sidebar
 st.sidebar.title("Instructions:")
