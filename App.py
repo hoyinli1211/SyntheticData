@@ -4,10 +4,7 @@ import pandas as pd
 import numpy as np
   #ros
 from imblearn.over_sampling import RandomOverSampler
-  #vae
-from keras.layers import Input, Dense, Lambda
-from keras.models import Model
-from keras.optimizers import Adam
+
 
 #Sidebar
 st.sidebar.title("Instructions:")
