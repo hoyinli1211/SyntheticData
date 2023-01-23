@@ -23,7 +23,7 @@ with tab_note:
     note()
     
 tab_main = tabs[1]
-With tab_main:
+with tab_main:
   # Allow the user to upload a file
   file = st.file_uploader("Upload your dataset in csv format", type=["csv"])
 
