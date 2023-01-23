@@ -31,8 +31,7 @@ with tab_main:
   samplecheck = st.checkbox("Use sample dataset")
   if samplecheck:
       file_url = "https://raw.githubusercontent.com/hoyinli1211/SyntheticData/main/sample-synthetic.csv"
-      file = pd.read_csv(file_url)
-      data = pd.read_csv(file)
+      data = pd.read_csv(file_url)
       st.write("Dataset", data)
 
   if uploaded_file is not None:
