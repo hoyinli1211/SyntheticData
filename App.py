@@ -39,5 +39,16 @@ with tab_main:
       st.write("Dataset", data)
       
   num_records = st.number_input("How many additional records would you like to generate?", min_value=1, value=1000)
+  label_col = st.selectbox("Select label column", data.columns)
   
+  smote = SMOTE(random_state=42)
+  # Use SMOTE to oversample the minority class & seperate the dataset into features and labels
+  X, y = smote.fit_resample(data.drop(label_col, axis=1), data[label_col])
+  
+  # Create a new dataframe with the oversampled data
+  data_resampled = pd.concat([pd.DataFrame(X_res), pd.DataFrame(y_res)], axis=1)
+
+  # Generate the specified number of records
+  data_synthetic = data_resampled.sample(num_records, random_state=42)
+  st.write("the synthetic data: ", data_synthetic)
   
