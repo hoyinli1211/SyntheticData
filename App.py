@@ -20,6 +20,7 @@ def note():
   st.title("Note")
   st.subheader("What is Imbalanced Data?")
   st.markdown("Imbalanced data is a common problem in machine learning where the classes in a dataset are not represented equally. In fraud detection, for example, the number of instances of fraud may be significantly less than the number of instances of non-fraud, leading to a biased model that is less effective at detecting fraud. There are several techniques for addressing imbalanced data, including oversampling the minority class, undersampling the majority class, and using techniques such as SMOTE (Synthetic Minority Over-sampling Technique) and ADASYN (Adaptive Synthetic Sampling). The most appropriate method will depend on the specific dataset and the problem being solved. Some reference papers on imbalanced data are:")
+  st.markdown("A dataset is considered imbalanced when one class (or group) of data points has significantly more observations than the other class. This is often the case in real-world datasets, particularly in areas such as fraud detection, anomaly detection, and medical diagnosis, where the minority class is the one of interest. For example, in a fraud detection dataset, the number of fraud cases may be only a small fraction of the total number of cases (say less than 10%), making the dataset imbalanced.")
   st.markdown("1. **He, H. and Garcia, E. A. (2008)** Learning from imbalanced data. IEEE Transactions on Knowledge and Data Engineering, 20(1), pp.1263-1284.")
   st.markdown("2. **Chawla, N. V., Bowyer, K. W., Hall, L. O. and Kegelmeyer, W. P. (2002)** SMOTE: Synthetic Minority Over-sampling Technique. Journal of Artificial Intelligence Research, 16, pp.321-357.")
   st.markdown("3. **Han, H., Wang, W. and Mao, B. (2005).** Borderline-SMOTE: A new over-sampling method in imbalanced data sets learning. In International Conference on Intelligent Computing, pp.878-887.")
@@ -72,6 +73,11 @@ def create_SMOTENC(df, label_col, num_records):
     # Return the resampled data
     synthetic_df = X_resampled.sample(num_records, replace=True).reset_index(drop=True)
     return synthetic_df
+
+def show_result(df, label_col, remark):
+  st.write(remark, df)
+  plot_label(df, label_col)
+  st.download_button("Download Synthetic data", df.to_csv(index=False), "Synthetic_Data.csv")
   
 #Main Page
 st.title("Synthetic Data Generator")
@@ -111,6 +117,7 @@ with tab_result:
     st.download_button("Download Synthetic data",data_ROS.to_csv(index=False), "Synthetic_Data_RandomOverSampling.csv")
   if st.checkbox("SMOTENC"):
     data_SMOTENC = create_SMOTENC(data, label_col, num_records)
-    st.write("Synthetic Data using SMOTE:", data_SMOTENC)
-    plot_label(data_SMOTENC, label_col)
-    st.download_button("Download Synthetic data", data_SMOTENC.to_csv(index=False), "Synthetic_Data_SMOTENC.csv")
+    #st.write("Synthetic Data using SMOTE:", data_SMOTENC)
+    #plot_label(data_SMOTENC, label_col)
+    #st.download_button("Download Synthetic data", data_SMOTENC.to_csv(index=False), "Synthetic_Data_SMOTENC.csv")
+    show_result(data_SMOTENC, label_col, "Synthetic Data using SMOTE:")
