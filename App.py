@@ -145,6 +145,6 @@ with tab_result:
   if st.checkbox("SMOTENC"):
     data_SMOTENC = create_SMOTENC(data, label_col, num_records)
     show_result(data_SMOTENC, label_col, "Synthetic Data using SMOTE:")
-  if st.checkbox("ADASYN"):
-    data_ADASYN = create_ADASYN(data, label_col, num_records)
-    show_result(data_ADASYN, label_col, "Synthetic Data using ADASYN:")
+  #if st.checkbox("ADASYN"):
+    #data_ADASYN = create_ADASYN(data, label_col, num_records)
+    #show_result(data_ADASYN, label_col, "Synthetic Data using ADASYN:")
