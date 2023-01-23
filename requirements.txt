@@ -1,5 +1,4 @@
 streamlit==1.14.0
 pandas==1.2.3
-pandas_profiling==2.9.0
 numpy==1.23.1
-faker==2.0.4
+imbalanced-learn==0.7.0
