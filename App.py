@@ -47,32 +47,33 @@ with tab_main:
   num_records = st.number_input("How many additional records would you like to generate?", min_value=1, value=1000)
   label_col = st.selectbox("Select label column", data.columns)
   
-  # Split the data into features and label
-  X = data.drop(label_col, axis=1) #assuming the name of the label column is "Fraud"
-  y = data[label_col]
-  
-  # Separating Numerical and Categorical variables
-  num_cols = X.select_dtypes(include=np.number).columns
-  cat_cols = X.select_dtypes(exclude=np.number).columns
+  if st.checkbox("Run the Synthetic Data"):
+    # Split the data into features and label
+    X = data.drop(label_col, axis=1) #assuming the name of the label column is "Fraud"
+    y = data[label_col]
 
-  # Scale numerical variables
-  scaler = MinMaxScaler()
-  X[num_cols] = scaler.fit_transform(X[num_cols])
+    # Separating Numerical and Categorical variables
+    num_cols = X.select_dtypes(include=np.number).columns
+    cat_cols = X.select_dtypes(exclude=np.number).columns
 
-  # Oversampling on numerical data using Random oversampling with replacement
-  X_num_resampled, y_num_resampled = resample(X[num_cols], y, 
-                                              random_state=42, 
-                                              sampling_strategy='auto', 
-                                              replace=True)
+    # Scale numerical variables
+    scaler = MinMaxScaler()
+    X[num_cols] = scaler.fit_transform(X[num_cols])
 
-  # Oversampling on categorical data using ADASYN
-  X_cat_resampled, y_cat_resampled = ADASYN().fit_resample(X[cat_cols], y)
+    # Oversampling on numerical data using Random oversampling with replacement
+    X_num_resampled, y_num_resampled = resample(X[num_cols], y, 
+                                                random_state=42, 
+                                                sampling_strategy='auto', 
+                                                replace=True)
 
-  # Join resampled numerical and categorical data
-  X_resampled = pd.concat([X_num_resampled, X_cat_resampled], axis=1)
-  y_resampled = y_num_resampled
+    # Oversampling on categorical data using ADASYN
+    X_cat_resampled, y_cat_resampled = ADASYN().fit_resample(X[cat_cols], y)
 
-  # Join the synthetic dataframe to the original dataframe
-  data_resampled = pd.concat([X_resampled, y_resampled], axis=1)
-  
-  st.write("Synthetic Data:", data_resampled)
+    # Join resampled numerical and categorical data
+    X_resampled = pd.concat([X_num_resampled, X_cat_resampled], axis=1)
+    y_resampled = y_num_resampled
+
+    # Join the synthetic dataframe to the original dataframe
+    data_resampled = pd.concat([X_resampled, y_resampled], axis=1)
+
+    st.write("Synthetic Data:", data_resampled)
