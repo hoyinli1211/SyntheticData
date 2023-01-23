@@ -60,7 +60,7 @@ def create_SMOTENC(df, label_col, num_records):
     # Add the label column back to the resampled data
     X_resampled[label_col] = y_resampled
     # Return the resampled data
-    synthetic_df = X_resampled
+    synthetic_df = X_resampled.sample(num_records, replace=True)
     return synthetic_df
   
 #Main Page
