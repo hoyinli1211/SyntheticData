@@ -11,7 +11,7 @@ st.sidebar.title("Instructions:")
 st.sidebar.markdown("1. Upload the data")
 st.sidebar.markdown("2. Choose the number of records required in the synthetic dataset")
 st.sidebar.markdown("3. Select the label data field")
-st.sidebar.markdown("4. ")
+st.sidebar.markdown("4. Choose the synthetic data method")
 
 def note():
   st.title("Note")
@@ -61,5 +61,6 @@ with tab_main:
 tab_result = tabs[2]
 with tab_result:
   if st.checkbox("Over Random Sampling"):
-    data_resampled = create_OverRandSampling(data, label_col, num_records)
-    st.write("Synthetic Data using Random Over-sampling:", data_resampled)
+    data_ROS = create_OverRandSampling(data, label_col, num_records)
+    st.write("Synthetic Data using Random Over-sampling:", data_ROS)
+    st.download_button("Download Synthetic data",data_ROS.to_csv(index=False), "Synthetic_Data_RandomOverSampling.csv")
