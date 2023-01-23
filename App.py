@@ -34,7 +34,7 @@ def plot_label(df, label_col):
   # create the pie chart
   plt.pie(label_counts.values, labels=label_counts.index)
   plt.title("Class Distribution in Label Column")
-  plt.show()
+  st.pyplot()
   
 def create_OverRandSampling(df, label_col, num_records):
     # Define the oversampling method
@@ -46,7 +46,7 @@ def create_OverRandSampling(df, label_col, num_records):
     # Create a new dataframe with the synthetic data
     synthetic_df = pd.concat([pd.DataFrame(X_res), pd.DataFrame(y_res, columns=[label_col])], axis=1)
     # Select a random sample from the synthetic dataframe
-    synthetic_df = synthetic_df.sample(num_records, replace=True)
+    synthetic_df = synthetic_df.sample(num_records, replace=True).reset_index(drop=True)
     return synthetic_df
 
 def create_SMOTENC(df, label_col, num_records):
@@ -69,7 +69,7 @@ def create_SMOTENC(df, label_col, num_records):
     # Add the label column back to the resampled data
     X_resampled[label_col] = y_resampled
     # Return the resampled data
-    synthetic_df = X_resampled.sample(num_records, replace=True)
+    synthetic_df = X_resampled.sample(num_records, replace=True).reset_index(drop=True)
     return synthetic_df
   
 #Main Page
