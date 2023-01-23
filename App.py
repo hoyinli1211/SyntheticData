@@ -5,9 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
   #ros
 from imblearn.over_sampling import RandomOverSampler
-  #smote
+  #smote-nc
 from imblearn.over_sampling import SMOTE, SMOTENC, ADASYN, BorderlineSMOTE, SVMSMOTE
 from sklearn.preprocessing import OrdinalEncoder
+
 
 #Sidebar
 st.sidebar.title("Instructions:")
@@ -80,6 +81,16 @@ def create_SMOTENC(df, label_col, num_records):
     return synthetic_df
 
 def create_ADASYN(df, label_col, num_records):
+    # Get the categorical column indices
+    cat_cols = df.select_dtypes(include=['object']).columns
+    cat_cols_idx = [df.columns.get_loc(col) for col in cat_cols]
+    # Initialize the encoder
+    enc = OrdinalEncoder()
+    # Encode the categorical columns
+    df[cat_cols] = enc.fit_transform(df[cat_cols])
+    # Split the data into features and target
+    X = df.drop(label_col, axis=1)
+    y = df[label_col]
     # Define the oversampling method
     adasyn = ADASYN(sampling_strategy='auto')
     # Split the data into features and labels
