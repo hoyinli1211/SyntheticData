@@ -2,7 +2,12 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+  #ros
 from imblearn.over_sampling import RandomOverSampler
+  #vae
+from keras.layers import Input, Dense, Lambda
+from keras.models import Model
+from keras.optimizers import Adam
 
 #Sidebar
 st.sidebar.title("Instructions:")
@@ -28,8 +33,7 @@ def create_OverRandSampling(df, label_col, num_records):
     # Select a random sample from the synthetic dataframe
     synthetic_df = synthetic_df.sample(num_records)
     return synthetic_df
-  
-  
+ 
 #Main Page
 st.title("Synthetic Data Generator")
 tabs = st.tabs(["Note","Upload & Configuration", "Create Synthetic Data"])
